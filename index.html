@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<title>Parsec (PARS) Blockchain Explorer</title>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.4.0/jquery.timeago.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script type="text/javascript" src="config.js"></script>
+	<script type="text/javascript" src="js/cookie.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Inconsolata">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<link rel="stylesheet" href="css/styles.css" type="text/css">
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="icon" type="image/icon" href="favicon.ico">
+</head>
+<body>
+<header id="header" class="page-topbar">
+	<div class="navbar-fixed">
+		<nav class="navbar-color red darken-2">
+			<div class="container">
+				<div class="nav-wrapper">
+					<ul class="left">
+						<li>
+							<a class="brand-logo" href="./"><span id="coin_icon">
+									<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1"
+										style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+										viewBox="0 0 2500000 2500000" xmlns:xlink="http://www.w3.org/1999/xlink"
+										width="32px" height="32px">
+										<g id="pars-logo">
+											<path fill="#D83232"
+												d="P">
+											</path>
+										</g>
+									</svg>
+								</span> <span class="hide-on-med-and-down">Parsec</span></a>
+						</li>
+					</ul>
+					<form class="header-search" action="javascript:handleSearch()">
+						<div class="input-field">
+							<input id="txt_search" type="search" tabindex="-1"
+								placeholder="Search by block height / hash, transaction hash, payment id, address">
+							<label id="btn_search" class="label-icon" for="txt_search"><i
+									class="material-icons">search</i></label>
+							<i class="material-icons" id="close_nav_search">close</i>
+						</div>
+					</form>
+					<ul class="right">
+						<li>
+							<a class="tooltipped hot_link menu waves-effect waves-block waves-light translation-button"
+								data-page="home.html" href="#" data-position="bottom" data-tooltip="Explorer">
+								<i class="material-icons">explore</i>
+							</a>
+						</li>
+						<li>
+							<a class="tooltipped hot_link menu waves-effect waves-block waves-light translation-button"
+								data-page="nodes.html" href="#nodes" data-position="bottom" data-tooltip="Public nodes.">
+								<i class="material-icons">cloud</i>
+							</a>
+						</li>
+						<li>
+							<a class="tooltipped hot_link menu waves-effect waves-block waves-light translation-button"
+								data-page="richlist.html" href="#richlist" data-position="bottom" data-tooltip="Richlist of those who voluntary published their riches.">
+								<i class="material-icons">leaderboard</i>
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-trigger waves-effect waves-block waves-light translation-button"
+								href="#!" data-target="dropdown_tools">
+								<i class="material-icons">apps</i>
+							</a>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<div class="switch switch-checkbox" style="margin-top: -2px;">
+								<label>
+									<input type="checkbox" id="switch_mode">
+									<span class="lever"></span>
+								</label>
+							</div>
+						</li>
+						<li class="divider"></li>
+						<li id="stats_updated"><i class="material-icons">notifications_none</i></li>
+					</ul>
+				</div>
+				<div style="clear: both">
+			</div>
+		</nav>
+	</div>
+
+	<ul id="dropdown_tools" class="dropdown-content"
+		style="white-space: nowrap; position: absolute; top: 64px; opacity: 1; display: none;">
+		<li>
+			<a class="hot_link menu" data-page="pushtx.html" href="#pushtx">
+				Broadcast transaction
+			</a>
+		</li>
+		<li>
+			<a class="hot_link menu" data-page="check_funds.html" href="#check_funds">
+				Check balance proof
+			</a>
+		</li>
+		<li>
+			<a class="hot_link menu" data-page="check_payment.html" href="#check_payment">
+				Check payment
+			</a>
+		</li>
+		<li>
+			<a class="hot_link menu" data-page="verify_message.html" href="#verify_message">
+				Verify message
+			</a>
+		</li>
+		<li>
+			<a class="hot_link menu" data-page="validate_address.html" href="#validate_address">
+				Validate address
+			</a>
+		</li>
+		<li><a class="hot_link menu" data-page="paper_wallet.html" href="#paperwallet">
+				Paper Wallet
+			</a>
+		</li>
+		<li>
+			<a class="hot_link menu" data-page="amount_converter.html" href="#amount_converter">
+				Amount converter
+			</a>
+		</li>
+		<li>
+			<a class="hot_link menu" data-page="payment_id.html" href="#payment_id_gen">
+				Payment Id tools
+			</a>
+		</li>
+		<li>
+			<a class="hot_link menu" data-page="api.html" href="#api">
+				API
+			</a>
+		</li>
+	<li style="display:none;">
+		<a class="hot_link" data-page="blockchain_block.html" href="#blockchain_block">
+			Block
+		</a>
+	</li>
+
+	<li style="display:none;">
+		<a class="hot_link" data-page="blockchain_transaction.html" href="#blockchain_transaction">
+		Transaction
+		</a>
+	</li>
+
+	<li style="display:none;">
+		<a class="hot_link" data-page="blockchain_block.html" href="#block">
+			Block
+		</a>
+	</li>
+
+	<li style="display:none;">
+		<a class="hot_link" data-page="blockchain_transaction.html" href="#transaction">
+			Transaction
+		</a>
+	</li>
+
+	<li style="display:none;">
+		<a class="hot_link" data-page="blockchain_payment_id.html" href="#payment_id">
+			Transactions by Payment ID
+		</a>
+	</li>
+
+	<li style="display:none;">
+		<a class="hot_link" data-page="address.html" href="#address">
+			Address
+		</a>
+	</li>
+
+</header>
+<div id="content">
+	<div class="container">
+
+		<a href="http://parsecnode.com" class="em-ribbon" style="position: absolute; left:0; top:0; width: 90px; height: 90px; background: url('https://github.com/parsecnode/parsec-icons/blob/main/96x96.png?raw=true'); z-index: 2013; border: 0;" title="Parsec: Secure, Private, Connected!" target="_blank"></a>
+
+		<div id="page"></div>
+
+		<p id="loading" class="center-align"><i class="fa fa-circle-o-notch fa-spin"></i></p>
+
+	</div>
+</div>
+
+<footer class="red darken-2 page-footer">
+	<div class="container">
+		<a class="scrollup btn-floating btn-large halfway-fab waves-effect waves-light orange darken-1"><i class="material-icons">keyboard_arrow_up</i></a>
+		<div class="row">
+			<div class="col l4 s12">
+				
+				<h5>Node info</h5>
+
+				<ul class="text-info">
+					<li>Status: <span id="node_connection" class="text-danger">Offline</span></li>
+					<li>Version: <span id="node_ver">...</span></li>
+					<li>Height: <span id="node_height">...</span></li>
+					<li>Last block: <span id="node_block">...</span></li>
+					<li>Difficulty: <span id="node_diff">...</span></li>
+					<li>Alt. blocks: <span id="node_alt">...</span></li>
+					<li>RPC connections: <span id="node_rpc">...</span></li>
+					<li>Incoming P2P connections: <span id="node_inc">...</span></li>
+					<li>Outgoing P2P connects: <span id="node_out">...</span></li>
+					<li>White peers: <span id="node_white">...</span></li>
+					<li>Grey peers: <span id="node_grey">...</span></li>
+				</ul>
+
+
+			</div>
+			<div class="col l4 s12">
+				<p>
+					<small>
+						<!-- This copyright should be left intact -->
+						Powered by <a target="_blank"
+							href="https://github.com/parsecnode/Parsec-Blockchain-Explorer">
+							<i class="fab fa-github"></i> Parsec Blockchain Explorer</a>
+						v. 1.2.7<br />
+						<span class="text-muted">Partially based on <strong>cryptonote-universal-pool</strong><br />
+							open sourced under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GPL</a></span>
+					</small>
+				</p>
+
+				<ul>
+					<li><a href="http://parsecnode.com/">parsecnode.com</a></li>
+				</ul>
+
+			</div>
+			<div class="col l4 s12">
+
+				<h5>Specification</h5>
+				<ul class="text-info">
+					<li>Ticker: PARS</li>
+					<li>Symbol: PARS</li>
+					<li>Proof-of-Work algorithm: Signed-blake256</li>
+					<li>Block time: 240 seconds</li>
+					<li>Difficulty: Retarget each block</li>
+					<li>Divisible: up to 10<sup>12</sup> atomic units (up to 12 decimal places)</li>
+					<li>Emission: &infin;</li>
+					<li>initial supply: 10&nbsp;Million PARS or 10,000,000,000,000,000,000 Atomic Units.</li>
+					<li>Tail emission: ~2% inflation p.a.</li>
+					<li>Block reward: Slight change every block according to formula<br/>
+						<strong>R = max((S - A)/2<sup>18</sup>, (A / 100 * 2) / B)</strong><br/>
+						where 'S' initial supply and 'A' is already generated coins, 'B' est. nr of blocks p.a.
+					</li>
+				</ul>
+
+			</div>
+		</div>
+	</div>
+	<div class="footer-copyright">
+		<div class="container">
+			&copy; 2022 <strong>Parsec Node</strong>
+		</div>
+	</div>
+</footer>
+<script>
+	$('.dropdown-trigger').dropdown({
+		inDuration: 300,
+		outDuration: 225,
+		hover: false, // Activate on hover
+		belowOrigin: true, // Displays dropdown below the button
+		alignment: 'right' // Displays dropdown with edge aligned to the left of button
+		}
+	);
+
+	$('#close_nav_search').hide();
+	$('#close_nav_search').click(function () {
+		$('#txt_search').val("");
+	});
+	$('#txt_search').focus(function () {
+		$('#close_nav_search').show();
+	});
+	$('#txt_search').blur(function () {
+		setTimeout(function () {
+			$('#close_nav_search').hide();
+		}, 300)
+	});
+
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+
+</script>
+</body>
+</html>
